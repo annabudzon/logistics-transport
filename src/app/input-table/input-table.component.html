@@ -1,0 +1,64 @@
+<div class="block">
+  <h2>Jednostkowe koszty transportu</h2>
+  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+      <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field *ngIf="column !== displayedColumns[0]; else name" floatLabel="never">
+          <input matInput placeholder="koszt" [value]="element[column]" [(ngModel)]="element[column]">
+        </mat-form-field>
+
+        <ng-template #name>{{ element[column] }}</ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+  </table>
+
+  <h2>Mozliwosci produkcyjne/podaży</h2>
+  <mat-form-field>
+    <input matInput placeholder="Dostawca 1" [(ngModel)]="+mozliwosci.D[0]">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Dostawca 2" [(ngModel)]="+mozliwosci.D[1]">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Dostawca 3" [(ngModel)]="+mozliwosci.D[2]">
+  </mat-form-field>
+
+  <h2>Mozliwosci popytu</h2>
+  <mat-form-field>
+    <input matInput placeholder="Odbiorca 1" [(ngModel)]="+mozliwosci.O[0]">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Odbiorca 2" [(ngModel)]="+mozliwosci.O[1]">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Odbiorca 3" [(ngModel)]="+mozliwosci.O[2]">
+  </mat-form-field>
+
+  <h2> Czy zadanie jest zbilansowane? </h2>
+  <mat-form-field>
+    <input matInput placeholder="Zbilansowane zadanie" [value]="checkIfBalanced()" readonly>
+  </mat-form-field>
+
+  <h2> Funkcja celu </h2>
+  <span>f(x) = {{ displayedRows[0].O1 }}x11 + {{ displayedRows[0].O2 }}x12 + {{ displayedRows[0].O3 }}x13 +
+    {{ displayedRows[1].O1 }}x21 + {{ displayedRows[1].O2 }}x22 + {{ displayedRows[1].O3 }}x23 +
+    {{ displayedRows[2].O1 }}x31 + {{ displayedRows[2].O2 }}x32 + {{ displayedRows[2].O3 }}x33 </span>
+
+  <!-- <button
+    mat-raised-button
+    color="primary"
+    (click)="metodaNajmniejszegoElementu()">
+      Oblicz metodą najmniejszego elementu
+  </button> -->
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!checkIfBalanced()"
+    (click)="metodaWierzcholkaPlnZach()">
+      Oblicz metodą wierzchołka płn-zach
+  </button>
+</div>

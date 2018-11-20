@@ -1,0 +1,144 @@
+<div class="container" *ngIf="result">
+  <h2>Tabela kosztów transportu</h2>
+
+  <table class="table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">O1</th>
+        <th scope="col">O2</th>
+        <th scope="col">O3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">D1</th>
+        <td *ngFor="let k of result.kosztyTransportu[0]">{{ k }}</td>
+      </tr>
+      <tr>
+        <th scope="row">D2</th>
+        <td *ngFor="let k of result.kosztyTransportu[1]">{{ k }}</td>
+      </tr>
+      <tr>
+        <th scope="row">D3</th>
+        <td *ngFor="let k of result.kosztyTransportu[2]">{{ k }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Tabela pierwszych przybliżeń</h2>
+
+  <table class="table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">O1</th>
+        <th scope="col">O2</th>
+        <th scope="col">O3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">D1</th>
+        <td *ngFor="let p of result.tabelaPrzyblizen[0]">{{ p }}</td>
+      </tr>
+      <tr>
+        <th scope="row">D2</th>
+        <td *ngFor="let p of result.tabelaPrzyblizen[1]">{{ p }}</td>
+      </tr>
+      <tr>
+        <th scope="row">D3</th>
+        <td *ngFor="let p of result.tabelaPrzyblizen[2]">{{ p }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Minimum funkcji celu</h2>
+  <span>{{ result.minFunkcjiCelu }}</span>
+
+  <h2>ALPHA</h2>
+
+  <table class="table-bordered">
+    <tbody>
+      <tr *ngFor="let alpha of result.alpha; let i = index">
+        <th scope="row">Alpha {{ i+1 }}</th>
+        <td>{{ alpha }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>BETA</h2>
+
+  <table class="table-bordered">
+    <tbody>
+      <tr *ngFor="let beta of result.beta; let i = index">
+        <th scope="row">Beta {{ i+1 }}</th>
+        <td>{{ beta }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Tabela wskaźników optymalności</h2>
+  <table class="table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">O1</th>
+        <th scope="col">O2</th>
+        <th scope="col">O3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">D1</th>
+        <td *ngFor="let p of result.deltas[0]">{{ p }}</td>
+      </tr>
+      <tr>
+        <th scope="row">D2</th>
+        <td *ngFor="let p of result.deltas[1]">{{ p }}</td>
+      </tr>
+      <tr>
+        <th scope="row">D3</th>
+        <td *ngFor="let p of result.deltas[2]">{{ p }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 *ngIf="result.zoptymalizowane; else nieZoptymalizowane">Zadanie jest zoptymalizowane</h2>
+  <ng-template #nieZoptymalizowane><h2>Zadanie nie jest zoptymalizowane</h2></ng-template>
+
+  <button mat-raised-button color="primary" [disabled]="result.zoptymalizowane" (click)="calculateAgain()">Licz dalej</button>
+</div>
+
+<div *ngIf="cykl && !result.zoptymalizowane" class="container">
+    <h2>Cykl</h2>
+    <table class="table-bordered">
+      <tbody>
+        <tr>
+          <td [ngClass]="checkIfMin(0) ? 'bold' : ''">{{ cykl[0].value }}</td>
+          <td [ngClass]="checkIfMin(1) ? 'bold' : ''">{{ cykl[1].value }}</td>
+        </tr>
+        <tr>
+          <td [ngClass]="checkIfMin(2) ? 'bold' : ''">{{ cykl[2].value }}</td>
+          <td [ngClass]="checkIfMin(3) ? 'bold' : ''">{{ cykl[3].value }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>czyli</h2>
+    <table class="table-bordered">
+      <tbody>
+        <tr>
+          <td [ngClass]="checkIfMin(0) ? 'bold' : ''">{{ result.tabelaPrzyblizen[cykl[0].i][cykl[0].j] }}</td>
+          <td [ngClass]="checkIfMin(1) ? 'bold' : ''">{{ result.tabelaPrzyblizen[cykl[1].i][cykl[1].j] }}</td>
+        </tr>
+        <tr>
+          <td [ngClass]="checkIfMin(2) ? 'bold' : ''">{{ result.tabelaPrzyblizen[cykl[2].i][cykl[2].j] }}</td>
+          <td [ngClass]="checkIfMin(3) ? 'bold' : ''">{{ result.tabelaPrzyblizen[cykl[3].i][cykl[3].j] }}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<div class="container" *ngIf="brakRozwiazania">
+  <h2>BRAK ROZWIAZANIA</h2>
+</div>
